@@ -7,3 +7,9 @@ export AWS_SECRET_ACCESS_KEY=`cat creds.json | jq -r '.Credentials.SecretAccessK
 export AWS_SESSION_TOKEN=`cat creds.json | jq -r '.Credentials.SessionToken'`
 
 aws sts get-caller-identity
+
+npm install
+
+if [ "$PLUGIN_ACTION" = "test" ]
+    npm run test
+fi
