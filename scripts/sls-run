@@ -1,5 +1,5 @@
 #!/bin/sh
-
-echo ${PLUGIN_ROLE}
-echo ${PLUGIN_STAGE}
-echo ${PLUGIN_REGION}
+printenv
+echo ${PLUGIN_ROLE} >> ~/.aws/config
+cat ~/.aws/config
+aws iam get-user
