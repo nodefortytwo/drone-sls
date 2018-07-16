@@ -1,5 +1,0 @@
-[profile deploy]
-source_profile = default 
-output = json 
-region = eu-central-1
-role_arn = 
