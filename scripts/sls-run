@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -e -o xtrace
 
 aws sts assume-role --role-arn ${PLUGIN_ROLE} --role-session-name=drone > creds.json
 
@@ -10,6 +10,14 @@ aws sts get-caller-identity
 
 npm install
 
-if [ "$PLUGIN_ACTION" = "test" ]
+if [ "$PLUGIN_ACTION" = "test" ] then
+    echo "running tests"
     npm run test
+fi
+
+if [ "$PLUGIN_ACTION" = "deploy" ] then
+    echo "domain go!"
+    node_modules/.bin/sls create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION}
+    echo "deploy go!"
+    node_modules/.bin/sls deploy  -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION}
 fi
