@@ -18,7 +18,11 @@ docker run --rm \
   -e AWS_SECRET_ACCESS_KEY=`echo $CREDS | jq -r '.Credentials.SecretAccessKey'` \
   -e AWS_SESSION_TOKEN=`echo $CREDS | jq -r '.Credentials.SessionToken'` \
   -e PLUGIN_ROLE=arn:aws:iam::144992683770:role/OrganizationAccountAccessRole \
-  -e PLUGIN_CREATE_DOMAIN=true \
+  -e PLUGIN_CREATE_DOMAIN=false \
   -e PLUGIN_ACTION=deploy \
+  -e PLUGIN_STAGE=dev \
+  -e PLUGIN_REGION=eu-central-1 \
+  -e PLUGIN_CONCEAL=true \
+  -e PLUGIN_ACCELERATE=true \
   nodefortytwo/drone-sls
 

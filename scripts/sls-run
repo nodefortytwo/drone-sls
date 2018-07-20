@@ -4,7 +4,19 @@ set -e
 
 if [ -z $PLUGIN_ROLE ];
 then
-    echo "Error: please, aws role to assume"
+    echo "Error: please provide aws role to assume"
+    exit 1
+fi
+
+if [ -z $PLUGIN_STAGE ];
+then
+    echo "Error: please provide deployment stage"
+    exit 1
+fi
+
+if [ -z $PLUGIN_REGION ];
+then
+    echo "Error: please provide aws region "
     exit 1
 fi
 
@@ -21,14 +33,16 @@ echo "ASSUMED $USER"
 
 if [ "$PLUGIN_CREATE_DOMAIN" = "true" ] 
 then
-    echo "CREATE DOMAIN"
-    node_modules/.bin/sls create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
+    echo "RUNNING CREATE DOMAIN"
+
+    set -x
+    node_modules/.bin/sls create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -x
+    set +x
 fi
 
 if [ "$PLUGIN_ACTION" = "deploy" ] 
 then
     ARGS=""
-    
     if [ "$PLUGIN_CONCEAL" = "true" ] 
     then
         ARGS="$ARGS --conceal"
@@ -38,8 +52,11 @@ then
     then
         ARGS="$ARGS --aws-s3-accelerate"
     fi
-
     echo "DEPLOY"
+
+    set -x
     node_modules/.bin/sls deploy ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
+    set +x
+    
 fi
 
