@@ -62,6 +62,7 @@ then
 
     set -x
     ${COMMAND} deploy ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
+    ${COMMAND} info ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
     set +x
     
 fi
