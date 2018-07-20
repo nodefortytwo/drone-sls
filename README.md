@@ -15,7 +15,7 @@ The following pipeline will build and deploy to the selected environment
 pipeline:
   deploy:
     image: nodefortytwo/sls:v2.0.0
-    role: ROLE-ARN
+    role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
     region: eu-central-1
