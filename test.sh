@@ -17,7 +17,7 @@ docker run --rm \
   -e AWS_ACCESS_KEY_ID=`echo $CREDS | jq -r '.Credentials.AccessKeyId'` \
   -e AWS_SECRET_ACCESS_KEY=`echo $CREDS | jq -r '.Credentials.SecretAccessKey'` \
   -e AWS_SESSION_TOKEN=`echo $CREDS | jq -r '.Credentials.SessionToken'` \
-  -e PLUGIN_ROLE=arn:aws:iam::144992683770:role/OrganizationAccountAccessRole \
+  -e PLUGIN_ROLE=arn:aws:iam::***:role/*** \
   -e PLUGIN_CREATE_DOMAIN=false \
   -e PLUGIN_ACTION=deploy \
   -e PLUGIN_STAGE=dev \
