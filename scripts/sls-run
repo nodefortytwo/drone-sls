@@ -30,13 +30,21 @@ export AWS_SESSION_TOKEN=`echo $CREDS | jq -r '.Credentials.SessionToken'`
 USER=`aws sts get-caller-identity |  jq -r '.Arn'`
 echo "ASSUMED $USER"
 
+if [ -f "./node_modules/.bin/sls" ]
+then
+    COMMAND="./node_modules/.bin/sls"
+else
+    COMMAND="sls"
+fi
+
+echo "using sls version `${COMMAND} --version`"
 
 if [ "$PLUGIN_CREATE_DOMAIN" = "true" ] 
 then
     echo "RUNNING CREATE DOMAIN"
 
     set -x
-    node_modules/.bin/sls create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -x
+    ${COMMAND} create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -x
     set +x
 fi
 
@@ -55,7 +63,7 @@ then
     echo "DEPLOY"
 
     set -x
-    node_modules/.bin/sls deploy ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
+    ${COMMAND} deploy ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
     set +x
     
 fi
