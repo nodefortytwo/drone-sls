@@ -20,7 +20,7 @@ then
     exit 1
 fi
 
-echo "ASSUMING ${PLUGIN_ROLE}"
+echo "Assuming: ${PLUGIN_ROLE}"
 CREDS=`aws sts assume-role --role-arn ${PLUGIN_ROLE} --role-session-name=${DRONE_REPO_OWNER}-${DRONE_REPO_NAME}`
 
 export AWS_ACCESS_KEY_ID=`echo $CREDS | jq -r '.Credentials.AccessKeyId'`
@@ -28,7 +28,7 @@ export AWS_SECRET_ACCESS_KEY=`echo $CREDS | jq -r '.Credentials.SecretAccessKey'
 export AWS_SESSION_TOKEN=`echo $CREDS | jq -r '.Credentials.SessionToken'`
 
 USER=`aws sts get-caller-identity |  jq -r '.Arn'`
-echo "ASSUMED $USER"
+echo "Assumed: $USER"
 
 if [ -f "./node_modules/.bin/sls" ]
 then
@@ -41,7 +41,6 @@ echo "using sls version `${COMMAND} --version`"
 
 if [ "$PLUGIN_CREATE_DOMAIN" = "true" ] 
 then
-    echo "RUNNING CREATE DOMAIN"
 
     set -x
     ${COMMAND} create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -x
@@ -60,7 +59,6 @@ then
     then
         ARGS="$ARGS --aws-s3-accelerate"
     fi
-    echo "DEPLOY"
 
     set -x
     ${COMMAND} deploy ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
