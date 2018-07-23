@@ -1,8 +1,8 @@
-FROM node:8.10-slim
+FROM node:8.10-alpine
 
 RUN npm i -g serverless@1.28.0
 
-RUN apt-get update && apt-get install -y python-dev python-pip jq
+RUN apk add --update python-dev py-pip jq
 RUN pip install awscli
 
 ADD ./scripts/sls-run /bin
