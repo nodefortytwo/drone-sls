@@ -54,6 +54,7 @@ pipeline:
     when:
       event: deployment
 ```
+The key parameter in `serverless` pipeline is `version_alias: true`. It enables marking all built lambda versions with short commit SHA aliases. That is how `serverless-live` is able to determine which lambda version should be switched.
 
 Alias switching can be also used together with regular deployment
 ```yaml
