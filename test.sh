@@ -24,5 +24,6 @@ docker run --rm \
   -e PLUGIN_REGION=eu-central-1 \
   -e PLUGIN_CONCEAL=true \
   -e PLUGIN_ACCELERATE=true \
-  nodefortytwo/drone-sls
-
+  -e PLUGIN_VERSION_ALIAS=true \
+  -e PLUGIN_ALIAS=LIVE \
+ nodefortytwo/drone-sls
