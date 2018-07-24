@@ -2,22 +2,44 @@
 
 set -e
 
-if [ -z $PLUGIN_ROLE ];
+if [ -z "$PLUGIN_ROLE" ];
 then
     echo "Error: please provide aws role to assume"
     exit 1
 fi
 
-if [ -z $PLUGIN_STAGE ];
+if [ -n "$DRONE_DEPLOY_TO" ];
+then
+    echo "Overriding stage '$PLUGIN_STAGE' with '$DRONE_DEPLOY_TO' from deployment event."
+    export PLUGIN_STAGE=$DRONE_DEPLOY_TO
+fi
+
+if [ -z "$PLUGIN_STAGE" ];
 then
     echo "Error: please provide deployment stage"
     exit 1
 fi
 
-if [ -z $PLUGIN_REGION ];
+if [ -z "$PLUGIN_REGION" ];
 then
     echo "Error: please provide aws region "
     exit 1
+fi
+export AWS_DEFAULT_REGION=$PLUGIN_REGION
+
+if [ -z "$PLUGIN_LAMBDA_NAME" ]
+then
+    echo "Info: Lambda name not defined. Service name from serverless.yml with stage suffix will be used."
+    export LAMBDA_NAME=$(cat serverless.yml | yq .service | sed 's/"//g')-$PLUGIN_STAGE
+else
+    export LAMBDA_NAME=$PLUGIN_LAMBDA_NAME
+fi
+
+if [ -z "$PLUGIN_LAMBDA_VERSION" ]
+then
+    export LAMBDA_VERSION=$(echo $DRONE_COMMIT_SHA | cut -c -11)
+else
+    export LAMBDA_VERSION=$PLUGIN_LAMBDA_VERSION
 fi
 
 echo "Assuming: ${PLUGIN_ROLE}"
@@ -41,7 +63,6 @@ echo "using sls version `${COMMAND} --version`"
 
 if [ "$PLUGIN_CREATE_DOMAIN" = "true" ] 
 then
-
     set -x
     ${COMMAND} create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -x
     set +x
@@ -65,5 +86,33 @@ then
     ${COMMAND} info ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
     set +x
     
+    if [ "$PLUGIN_VERSION_ALIAS" = "true" ]
+    then
+        export VERSION=$(aws lambda list-versions-by-function --function-name $LAMBDA_NAME | jq ".Versions[-1].Version" | sed 's/\"//g')
+        echo "Version is $VERSION"
+        aws lambda create-alias --function-name $LAMBDA_NAME --function-version $VERSION --name $LAMBDA_VERSION
+    fi
 fi
 
+if [ -n "$PLUGIN_ALIAS" ]
+then
+    echo "Alias: $PLUGIN_ALIAS"
+    export VERSION=$(aws lambda get-alias --function-name $LAMBDA_NAME --name $LAMBDA_VERSION | jq --raw-output '.FunctionVersion') 
+    echo "Version is $VERSION"
+
+    set +e
+    aws lambda get-alias --function-name $LAMBDA_NAME --name $PLUGIN_ALIAS;  
+    set -e
+
+    # check if last command failed
+    if [ $? -gt 0 ]
+    then
+      echo "Creating alias $PLUGIN_ALIAS with lambda version: $VERSION"
+      aws lambda create-alias --function-name $LAMBDA_NAME --function-version $VERSION --name $PLUGIN_ALIAS;
+    else
+      echo "Marking lambda version $VERSION as $PLUGIN_ALIAS"
+      aws lambda update-alias --function-name $LAMBDA_NAME --function-version $VERSION --name $PLUGIN_ALIAS;
+    fi
+
+    echo Switching $LAMBDA_NAME:$PLUGIN_ALIAS to version $VERSION completed
+fi
