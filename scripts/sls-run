@@ -101,17 +101,16 @@ then
     echo "Version is $VERSION"
 
     set +e
-    aws lambda get-alias --function-name $LAMBDA_NAME --name $PLUGIN_ALIAS;  
+    echo "Marking lambda version $VERSION as $PLUGIN_ALIAS"
+    aws lambda update-alias --function-name $LAMBDA_NAME --function-version $VERSION --name $PLUGIN_ALIAS;
+    UPDATE_STATUS=$?
     set -e
 
     # check if last command failed
-    if [ $? -gt 0 ]
+    if [ $UPDATE_STATUS -gt 0 ]
     then
       echo "Creating alias $PLUGIN_ALIAS with lambda version: $VERSION"
       aws lambda create-alias --function-name $LAMBDA_NAME --function-version $VERSION --name $PLUGIN_ALIAS;
-    else
-      echo "Marking lambda version $VERSION as $PLUGIN_ALIAS"
-      aws lambda update-alias --function-name $LAMBDA_NAME --function-version $VERSION --name $PLUGIN_ALIAS;
     fi
 
     echo Switching $LAMBDA_NAME:$PLUGIN_ALIAS to version $VERSION completed
