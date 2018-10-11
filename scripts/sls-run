@@ -94,6 +94,13 @@ then
     fi
 fi
 
+if [ "$PLUGIN_ACTION" = "s3deploy" ]
+then
+    set -x
+    ${COMMAND} s3deploy
+    set +x
+fi
+
 if [ -n "$PLUGIN_ALIAS" ]
 then
     echo "Alias: $PLUGIN_ALIAS"
