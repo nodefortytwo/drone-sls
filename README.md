@@ -105,11 +105,5 @@ pipeline:
     action: deploy
     stage: dev
     region: eu-central-1
-     
-  deploy-s3:
-    image: nodefortytwo/drone-sls:v2.1.1
-    role: arn:aws:iam::144992683770:role/automation-drone
-    action: s3deploy
-    stage: dev
-    region: eu-central-1
+    s3_deploy: true
 ```
