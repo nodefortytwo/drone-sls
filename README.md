@@ -14,7 +14,7 @@ The following pipeline will build and deploy to the selected environment
 ```yaml
 pipeline:
   deploy:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
@@ -25,7 +25,7 @@ If you have a api-gateway domain
 ```yaml
 pipeline:
   serverless:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
@@ -37,7 +37,7 @@ To populate lambda version to the alias
 ```yaml
 pipeline:
   serverless:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
@@ -47,7 +47,7 @@ pipeline:
       event: push
 
   serverless-live:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     region: eu-central-1
     alias: LIVE
@@ -60,7 +60,7 @@ Alias switching can be also used together with regular deployment
 ```yaml
 pipeline:
   serverless:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
@@ -75,7 +75,7 @@ The full monty
 ```yaml
 pipeline:
   serverless:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
@@ -85,7 +85,7 @@ pipeline:
     accelerate: true
 
   serverless-live:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     region: eu-central-1
     alias: LIVE
@@ -100,7 +100,7 @@ Following example will build, deploy and connect S3 bucket events to the selecte
 ```yaml
 pipeline:
   deploy:
-    image: nodefortytwo/sls:v2.2.0
+    image: nodefortytwo/sls:v2.2.1
     role: arn:aws:iam::***:role/***
     action: deploy
     stage: dev
