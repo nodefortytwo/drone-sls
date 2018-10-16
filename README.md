@@ -96,7 +96,7 @@ pipeline:
 ### Attaching S3 bucket events function
 To run this step you need to have instaleed serverless-plugin-existing-s3 plugin (https://www.npmjs.com/package/serverless-plugin-existing-s3)
 
-Following example will build, deploy and conncect S3 bucket events to the selected environment
+Following example will build, deploy and connect S3 bucket events to the selected environment
 ```yaml
 pipeline:
   deploy:
