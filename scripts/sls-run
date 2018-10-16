@@ -85,6 +85,13 @@ then
     ${COMMAND} deploy ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
     ${COMMAND} info ${ARGS} -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
     set +x
+
+    if [ "$PLUGIN_S3_DEPLOY" = "true" ]
+    then
+        set -x
+        ${COMMAND} s3deploy
+        set +x
+    fi
     
     if [ "$PLUGIN_VERSION_ALIAS" = "true" ]
     then

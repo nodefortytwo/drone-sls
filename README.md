@@ -92,3 +92,18 @@ pipeline:
     when:
       event: deployment
 ```
+
+### Attaching S3 bucket events function
+To run this step you need to have instaleed serverless-plugin-existing-s3 plugin (https://www.npmjs.com/package/serverless-plugin-existing-s3)
+
+Following example will build, deploy and connect S3 bucket events to the selected environment
+```yaml
+pipeline:
+  deploy:
+    image: nodefortytwo/sls:v2.1.1
+    role: arn:aws:iam::***:role/***
+    action: deploy
+    stage: dev
+    region: eu-central-1
+    s3_deploy: true
+```
