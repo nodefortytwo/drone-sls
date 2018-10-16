@@ -89,7 +89,7 @@ then
     if [ "$PLUGIN_S3_DEPLOY" = "true" ]
     then
         set -x
-        ${COMMAND} s3deploy
+        ${COMMAND} s3deploy -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION}
         set +x
     fi
     
