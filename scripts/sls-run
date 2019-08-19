@@ -101,6 +101,13 @@ then
     fi
 fi
 
+if [ "$PLUGIN_ACTION" = "remove" ] 
+then
+    set -x
+    ${COMMAND} remove -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
+    set +x
+fi
+
 if [ -n "$PLUGIN_ALIAS" ]
 then
     echo "Alias: $PLUGIN_ALIAS"
