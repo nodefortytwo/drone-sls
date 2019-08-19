@@ -8,7 +8,7 @@ then
     exit 1
 fi
 
-if [ -n "$DRONE_DEPLOY_TO" ];
+if [ "$DRONE_DEPLOY_TO_OVERRIDE" != "false" ];
 then
     echo "Overriding stage '$PLUGIN_STAGE' with '$DRONE_DEPLOY_TO' from deployment event."
     export PLUGIN_STAGE=$DRONE_DEPLOY_TO
@@ -61,22 +61,22 @@ fi
 
 echo "using sls version `${COMMAND} --version`"
 
-if [ "$PLUGIN_CREATE_DOMAIN" = "true" ] 
+if [ "$PLUGIN_CREATE_DOMAIN" = "true" ]
 then
     set -x
     ${COMMAND} create_domain -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -x
     set +x
 fi
 
-if [ "$PLUGIN_ACTION" = "deploy" ] 
+if [ "$PLUGIN_ACTION" = "deploy" ]
 then
     ARGS=""
-    if [ "$PLUGIN_CONCEAL" = "true" ] 
+    if [ "$PLUGIN_CONCEAL" = "true" ]
     then
         ARGS="$ARGS --conceal"
     fi
 
-    if [ "$PLUGIN_ACCELERATE" = "true" ] 
+    if [ "$PLUGIN_ACCELERATE" = "true" ]
     then
         ARGS="$ARGS --aws-s3-accelerate"
     fi
@@ -92,7 +92,7 @@ then
         ${COMMAND} s3deploy -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION}
         set +x
     fi
-    
+
     if [ "$PLUGIN_VERSION_ALIAS" = "true" ]
     then
         export VERSION=$(aws lambda list-versions-by-function --function-name $LAMBDA_NAME | jq ".Versions[-1].Version" | sed 's/\"//g')
@@ -101,7 +101,7 @@ then
     fi
 fi
 
-if [ "$PLUGIN_ACTION" = "remove" ] 
+if [ "$PLUGIN_ACTION" = "remove" ]
 then
     set -x
     ${COMMAND} remove -s ${PLUGIN_STAGE} -r ${PLUGIN_REGION} -v
@@ -111,7 +111,7 @@ fi
 if [ -n "$PLUGIN_ALIAS" ]
 then
     echo "Alias: $PLUGIN_ALIAS"
-    export VERSION=$(aws lambda get-alias --function-name $LAMBDA_NAME --name $LAMBDA_VERSION | jq --raw-output '.FunctionVersion') 
+    export VERSION=$(aws lambda get-alias --function-name $LAMBDA_NAME --name $LAMBDA_VERSION | jq --raw-output '.FunctionVersion')
     echo "Version is $VERSION"
 
     set +e
