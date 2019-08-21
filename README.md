@@ -79,6 +79,7 @@ pipeline:
     action: deploy
     stage: dev
     region: eu-central-1
+    version_alias: true
     create_domain: true
     conceal: true
     accelerate: true
@@ -110,3 +111,14 @@ pipeline:
 ### Options
 
 ```DRONE_DEPLOY_TO_OVERRIDE``` (```true``` by default) if set to ```false``` does not override $STAGE with $DRONE_DEPLOY_TO
+
+```yaml
+pipeline:
+  deploy:
+    image: nodefortytwo/sls:v2.2.1
+    role: arn:aws:iam::***:role/***
+    action: deploy
+    stage: dev
+    region: eu-central-1
+    drone_deploy_to_override: false
+```

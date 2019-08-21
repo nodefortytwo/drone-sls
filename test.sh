@@ -13,7 +13,6 @@ docker run --rm \
   -e DRONE_BUILD_NUMBER=1 \
   -e DRONE_BUILD_STATUS=success \
   -e DRONE_BUILD_LINK=http://github.com/octocat/hello-world \
-  -e DRONE_DEPLOY_TO_OVERRIDE=false \
   -e DRONE_TAG=1.0.0 \
   -e AWS_ACCESS_KEY_ID=`echo $CREDS | jq -r '.Credentials.AccessKeyId'` \
   -e AWS_SECRET_ACCESS_KEY=`echo $CREDS | jq -r '.Credentials.SecretAccessKey'` \
@@ -27,4 +26,5 @@ docker run --rm \
   -e PLUGIN_ACCELERATE=true \
   -e PLUGIN_VERSION_ALIAS=true \
   -e PLUGIN_ALIAS=LIVE \
+  -e DRONE_DEPLOY_TO_OVERRIDE=false \
  nodefortytwo/drone-sls
