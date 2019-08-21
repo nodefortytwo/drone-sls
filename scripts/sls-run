@@ -8,7 +8,7 @@ then
     exit 1
 fi
 
-if [ "$DRONE_DEPLOY_TO_OVERRIDE" != "false" ];
+if [ "$PLUGIN_DRONE_DEPLOY_TO_OVERRIDE" != "false" ];
 then
     echo "Overriding stage '$PLUGIN_STAGE' with '$DRONE_DEPLOY_TO' from deployment event."
     export PLUGIN_STAGE=$DRONE_DEPLOY_TO
