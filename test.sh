@@ -26,4 +26,5 @@ docker run --rm \
   -e PLUGIN_ACCELERATE=true \
   -e PLUGIN_VERSION_ALIAS=true \
   -e PLUGIN_ALIAS=LIVE \
+  -e PLUGIN_DRONE_DEPLOY_TO_OVERRIDE=false \
  nodefortytwo/drone-sls
