@@ -27,6 +27,11 @@ then
 fi
 export AWS_DEFAULT_REGION=$PLUGIN_REGION
 
+if [ -n "$PLUGIN_CUSTOM_DIR" ]
+then
+    cd ${PLUGIN_CUSTOM_DIR}
+fi
+
 if [ -z "$PLUGIN_LAMBDA_NAME" ]
 then
     echo "Info: Lambda name not defined. Service name from serverless.yml with stage suffix will be used."
@@ -51,11 +56,6 @@ export AWS_SESSION_TOKEN=`echo $CREDS | jq -r '.Credentials.SessionToken'`
 
 USER=`aws sts get-caller-identity |  jq -r '.Arn'`
 echo "Assumed: $USER"
-
-if [ -n "$PLUGIN_CUSTOM_DIR" ]
-then
-    cd ${PLUGIN_CUSTOM_DIR}
-fi
 
 if [ -f "./node_modules/.bin/sls" ]
 then
