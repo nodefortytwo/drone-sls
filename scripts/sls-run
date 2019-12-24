@@ -52,6 +52,11 @@ export AWS_SESSION_TOKEN=`echo $CREDS | jq -r '.Credentials.SessionToken'`
 USER=`aws sts get-caller-identity |  jq -r '.Arn'`
 echo "Assumed: $USER"
 
+if [ -n "$PLUGIN_CUSTOM_DIR" ]
+then
+    cd ${PLUGIN_CUSTOM_DIR}
+fi
+
 if [ -f "./node_modules/.bin/sls" ]
 then
     COMMAND="./node_modules/.bin/sls"
