@@ -122,3 +122,16 @@ pipeline:
     region: eu-central-1
     drone_deploy_to_override: false
 ```
+
+```CUSTOM_DIR``` (```./``` by default) lets you specify directory where your lambda function lays
+
+```yaml
+pipeline:
+  deploy:
+    image: nodefortytwo/sls:v2.2.1
+    role: arn:aws:iam::***:role/***
+    action: deploy
+    stage: dev
+    region: eu-central-1
+    custom_dir: ./custom/dir
+```
