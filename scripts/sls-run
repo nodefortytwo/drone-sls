@@ -27,6 +27,11 @@ then
 fi
 export AWS_DEFAULT_REGION=$PLUGIN_REGION
 
+if [ -n "$PLUGIN_CUSTOM_DIR" ]
+then
+    cd ${PLUGIN_CUSTOM_DIR}
+fi
+
 if [ -z "$PLUGIN_LAMBDA_NAME" ]
 then
     echo "Info: Lambda name not defined. Service name from serverless.yml with stage suffix will be used."
