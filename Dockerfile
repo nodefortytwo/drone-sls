@@ -1,6 +1,6 @@
-FROM node:8.10-alpine
+FROM node:12.18-alpine
 
-RUN npm i -g serverless@1.28.0
+RUN npm i -g serverless@1.78.1
 
 RUN apk add --update python-dev py-pip jq 
 RUN pip install awscli yq
